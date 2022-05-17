@@ -16,7 +16,7 @@ public class PostsController {
     Post post3 = new Post(3L, "My Third Post", "This is the body/contents of my third post.");
 
 
-    public ArrayList<Post> setPost(){
+    public ArrayList<Post> setPost() {
         posts.add(post1);
         posts.add(post2);
         posts.add(post3);
@@ -24,13 +24,14 @@ public class PostsController {
         return posts;
     }
 
-
+    //********* GET ALL METHOD *********
     @GetMapping()
     public ArrayList<Post> getAll() {
         posts.removeAll(posts);
         return setPost();
     }
 
+    //******** GET BY ID *************
     @GetMapping("{id}")
     public Post getById(@PathVariable Long id) {
         for (Post post : getAll()) {
@@ -41,6 +42,26 @@ public class PostsController {
         return new Post();
     }
 
+    //******** CREATE POST **********
+    @PostMapping
+    private void createPost(@RequestBody Post newPost) {
+        System.out.println(newPost);
+
+    }
+
+    //    ********* UPDATE POST **********
+    @PutMapping("{id}")
+    private void updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
+        System.out.println(id);
+        System.out.println(updatePost);
+    }
+
+
+//    ********** DELETE POST **********
+    @DeleteMapping("{id}")
+    private void deletePost(@PathVariable Long id) {
+        System.out.println(id);
+    }
 
 }
 
