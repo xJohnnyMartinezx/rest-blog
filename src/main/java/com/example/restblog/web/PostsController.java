@@ -45,22 +45,22 @@ public class PostsController {
     //******** CREATE POST **********
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
-        System.out.println(newPost);
+        System.out.println("New post has been created");
 
     }
 
     //    ********* UPDATE POST **********
     @PutMapping("{id}")
     private void updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
-        System.out.println(id);
-        System.out.println(updatePost);
+        System.out.println("The id is: " + id);
+        System.out.println("Post has been updated");
     }
 
 
 //    ********** DELETE POST **********
     @DeleteMapping("{id}")
     private void deletePost(@PathVariable Long id) {
-        System.out.println(id);
+        System.out.println("Post with ID of " + id + " has been deleted");
     }
 
 }
