@@ -19,11 +19,11 @@ public class User {
 //    *********** CONSTRUCTOR ************
 
 
-    public User(long id) {
-        this.id = id;
+    public User() {
+
     }
 
-    public User(long id, String username, String email, String password) {
+    public User(Long id,String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -65,21 +65,6 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
 
 //    **********TO STRING **********
