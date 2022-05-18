@@ -43,6 +43,7 @@ export default function PostIndex(props) {
 export function PostsEvent() {
     addNewPost();
     createEditPostListener();
+    deletePost();
 }
 
 
@@ -50,7 +51,7 @@ export function PostsEvent() {
 function addNewPost() {
     $(document).on('click', '#create-post-sub-butt', function (e) {
         e.preventDefault();
-        console.log("clicked")
+        console.log("submit button has been clicked")
 
         let newPost = {
             title: $("#post-title").val(),
@@ -97,8 +98,8 @@ function createEditPostListener() {
         postId = $(this).data("id");
         requestMethod = "PUT"
 
-        const postTitle = $(`#title-${postId}`)
-        const postContent = $(`#content-${postId}`)
+        const postTitle = $(`#title-${postId}`).text();
+        const postContent = $(`#content-${postId}`).text();
 
         $("#add-post-title").val(postTitle);
         $("#add-post-content").val(postContent);
@@ -111,11 +112,26 @@ function createEditPostListener() {
 }
 
 //********** DELETE POST FUNCTION *************
-//     function deletePost(){
-//         $(document).on("click", "delete-button", function (e) {
-//             e.preventDefault();
-//
-//             const =
-//         })
-//     }
-// }
+    function deletePost(){
+        $(document).on("click", ".delete-button", function (e) {
+            e.preventDefault();
+            console.log("delete button has been clicked")
+
+            const id = $(this).data("id");
+
+            const request = {
+                method: "DELETE"
+            }
+
+            fetch(`${postUrl}/${id}`, request)
+                .then(res => {
+                    console.log(res.status);
+                    // createView("/posts")
+                }).catch(error => {
+                console.log(error);
+                // createView("/posts");
+            }).finally(() => {
+                createView("/posts")
+            })
+        })
+    }

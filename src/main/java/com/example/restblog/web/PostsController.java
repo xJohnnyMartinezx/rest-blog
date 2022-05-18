@@ -13,15 +13,24 @@ import java.util.Objects;
 public class PostsController {
 
     List<Post> posts = new ArrayList<>();
+        Post post1 = new Post(1L, "My First Post", "This is the body/contents of my first post.");
+        Post post2 = new Post(2L, "My Second Post", "This is the body/contents of my second post.");
+        Post post3 = new Post(3L, "My Third Post", "This is the body/contents of my third post.");
 
+
+    public List<Post> setPost() {
+        posts.add(post1);
+        posts.add(post2);
+        posts.add(post3);
+
+        return posts;
+    }
 
     //********* GET ALL METHOD *********
     @GetMapping()
     public List<Post> getAll() {
-        posts.add(new Post(1L, "My First Post", "This is the body/contents of my first post."));
-        posts.add(new Post(2L, "My Second Post", "This is the body/contents of my second post."));
-        posts.add(new Post(3L, "My Third Post", "This is the body/contents of my third post."));
-        return posts;
+        posts.removeAll(posts);
+        return setPost();
     }
 
     //******** GET BY ID *************
