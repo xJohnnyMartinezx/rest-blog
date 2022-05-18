@@ -1,6 +1,8 @@
-import createView from "../createView";
+import createView from "../createView.js";
 
-// const postUrl = "http//localhost:8080/posts"
+const postUrl = "http://localhost:8080/api/posts";
+let requestMethod = "POST";
+let postId = "";
 
 export default function PostIndex(props) {
     //language=HTML
@@ -10,85 +12,110 @@ export default function PostIndex(props) {
         </header>
         <main>
             <div id="posts-container">
-                ${props.posts.map(post => `
-                    <h3>${post.title}</h3>
-                    <p>${post.contents}</p>
-                `).join('')}   
+                ${props.posts.map(post =>
+                        `
+                                <h3 id="title-${post.id}">${post.title}</h3>
+                                <p id="content-${post.id}">${post.content}</p>
+<button type="submit" class="btn btn-primary edit-button" data-id="${post.id}">Edit</button>
+<button type="submit" class="btn btn-danger delete-button" data-id="${post.id}">Delete</button>`)
+                        .join('')}
             </div>
             <div id="post-form">
                 <div class="mb-3">
-                 <label for="exampleFormControlInput1" class="form-label">Post Title</label>
-                    <input type="text" class="form-control" id="post-title" placeholder="Ente title here.">
+                    <label for="exampleFormControlInput1" class="form-label">Post Title</label>
+                    <input type="text" class="form-control" id="post-title" placeholder="Enter title here.">
                 </div>
                 <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Enter new post content below.</label>
-                  <textarea class="form-control" id="post-content" rows="3"></textarea>
+                    <label for="exampleFormControlTextarea1" class="form-label">Enter new post content below.</label>
+                    <textarea class="form-control" id="post-content" rows="3"></textarea>
                 </div>
             </div>
-            <button id="create-post-sub-butt" btn="btn-secondary">Submit New Post</button>
+            <div>
+                <button id="create-post-sub-butt" class="btn btn-secondary">Submit New Post</button>
+            </div>
         </main>
     `;
+
 }
 
 
-// window.addEventListener("click", "create-post-sub-butt", submitNewPost())
-// document.getElementById("create-post-sub-butt").addEventListener("click", submitNewPost)
+// ************ POST EVENT FUNCTION ***************
 export function PostsEvent() {
-    return addNewPost()
+    addNewPost();
+    createEditPostListener();
 }
 
 
 //********** ADD NEW POST FUNCTION *************
-
-
-// ************ POST EVENT FUNCTION ***************
-
-
 function addNewPost() {
-    $(document).on("click", "#create-post-sub-butt", function (){
-        console.log("button click test");
-    })
-//     let postTitle = document.getElementById("post-title").value
-//     let postContent = document.getElementById("post-content").value
-//
-//     let post = {title: postTitle, contents: postContent};
-//     let request = {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(post)
-//     };
-//     fetch("http:localhost:8080/posts", request)
-//         .then(res => {
-//             console.log(res.status);
-//             createView("/posts")
-//         }).catch(error => {
-//         console.log(error);
-//         createView("/posts");
-//     });
-// }
+    $(document).on('click', '#create-post-sub-butt', function (e) {
+        e.preventDefault();
+        console.log("clicked")
 
-    const post = {
-        title: $("post-title").val(),
-        contents: $("post-content").val()
-    }
+        let newPost = {
+            title: $("#post-title").val(),
+            content: $("#post-content").val()
+        }
 
-    const request = {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(post)
-    };
-        fetch("http:localhost:8080/api/posts", request)
-        .then(res => {
-            console.log(res.status);
+        let request = {
+            method: requestMethod,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost)
+        }
+
+        let requestUrl = "";
+
+        if (postId !== "") {
+            requestUrl = `${postUrl}/${postId}`;
+        } else {
+            requestUrl = `${postUrl}`;
+        }
+
+
+        fetch(requestUrl, request)
+            .then(res => {
+                console.log(res.status);
+                // createView("/posts")
+            }).catch(error => {
+            console.log(error);
+            // createView("/posts");
+        }).finally(() => {
+            postId = "";
+            requestMethod = "POST";
             createView("/posts")
-        }).catch(error => {
-        console.log(error);
-        createView("/posts");
-    });
-
-
-
-
+        });
+    })
 }
+
+//********** EDIT POST FUNCTION *************
+function createEditPostListener() {
+    $(document).on("click", ".edit-button", function (e) {
+        e.preventDefault();
+        console.log("edit button has been clicked")
+        postId = $(this).data("id");
+        requestMethod = "PUT"
+
+        const postTitle = $(`#title-${postId}`)
+        const postContent = $(`#content-${postId}`)
+
+        $("#add-post-title").val(postTitle);
+        $("#add-post-content").val(postContent);
+
+        console.log(postId);
+        console.log(requestMethod);
+
+
+    })
+}
+
+//********** DELETE POST FUNCTION *************
+//     function deletePost(){
+//         $(document).on("click", "delete-button", function (e) {
+//             e.preventDefault();
+//
+//             const =
+//         })
+//     }
+// }
