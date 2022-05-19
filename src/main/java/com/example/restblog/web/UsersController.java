@@ -2,6 +2,9 @@ package com.example.restblog.web;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +46,31 @@ public class UsersController {
         return new User();
     }
 
-    //******** CREATE POST **********
+    //******** GET BY USERNAME *************
+    @GetMapping("/username")
+    public User gertByUsername(@RequestParam String username){
+        for (User user : getAll()) {
+            if(Objects.equals(user.getUsername(), username)){
+                return user;
+            }
+        }
+        return new User();
+    }
+
+
+    //******** GET BY EMAIL *************
+    @GetMapping("/email")
+    public User gertByEmail(@RequestParam String email){
+        for (User user : getAll()) {
+            if(Objects.equals(user.getEmail(), email)){
+                return user;
+            }
+        }
+        return new User();
+    }
+
+
+    //******** CREATE USER **********
     @PostMapping
     private void createUser(@RequestBody User newUser) {
         users.add(newUser);
@@ -52,15 +79,30 @@ public class UsersController {
 
     }
 
-    //    ********* UPDATE POST **********
+    //    ********* UPDATE USER **********
     @PutMapping("{id}")
     private void updateUser(@PathVariable Long id, @RequestBody User updateUser) {
         System.out.println("The id is: " + id);
         System.out.println("User has been updated");
     }
 
+    //    ********* UPDATE PASSWORD **********
+    @PutMapping({"{id}/updatePassword"})
+    private void updatePassword(@PathVariable Long id,
+                                @RequestParam(required = false) String oldPassword,
+                                @Valid @Size(min = 3) @RequestParam String newPassword) {
+        for (User user : getAll()) {
+            if ((Objects.equals(user.getId(), id))){
+                if (Objects.equals(user.getPassword(), oldPassword)) {
+                    System.out.println("Invalid Password");
+                }
 
-    //    ********** DELETE POST **********
+            }
+        }
+    }
+
+
+    //    ********** DELETE USER **********
     @DeleteMapping("{id}")
     private void deleteUser(@PathVariable Long id) {
         System.out.println("User with ID of " + id + " has been deleted");
