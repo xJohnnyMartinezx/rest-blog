@@ -1,11 +1,14 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
+import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.example.restblog.web.UsersController;
 
 @CrossOrigin
 @RestController

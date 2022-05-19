@@ -12,7 +12,14 @@ public class Post {
     private String title;
     private String content;
 
-//    ******* CONSTRUCTOR **********
+    private User user;
+
+//    ********** USER CONSTRUCTOR*******
+
+    public Post(User user) {
+        this.user = user;
+    }
+    //    ******* CONSTRUCTOR **********
 
 
     public Post() {
@@ -25,6 +32,16 @@ public class Post {
     }
 
 //    ******** GETTERS AND SETTERS ***********
+//   ************ USERS ************
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+//*****************************
 
 
     public Long getId() {
@@ -51,12 +68,15 @@ public class Post {
         this.content = content;
     }
 
+
+
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", user=" + user +
                 '}';
     }
 }
