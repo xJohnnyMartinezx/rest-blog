@@ -1,4 +1,9 @@
+import createView from "../createView.js";
+
+const BASE_URL = "http://localhost:8080/api/users"
+
 export default function User(props) {
+    // console.log(props.user);
 
     // language=HTML
     return `
@@ -7,34 +12,55 @@ export default function User(props) {
         <html lang="em">
         <head>
             <meta charset="UTF-8"/>
-            <title>User</title>
+            <title>Hello, ${props.user.username}</title>
         </head>
         <body>
-        <h1>User Information</h1>
+        <h1>Your Information</h1>
 
         <div id="user-container">
-            ${props.users.map(user =>
-                    `
-                                <p id="username-${user.id}">${user.username}</p>
-                                <p id="email-${user.id}">${user.email}</p>
-<button type="submit" class="btn btn-primary edit-button" data-id="${user.id}">Edit</button>
-<button type="submit" class="btn btn-danger delete-button" data-id="${user.id}">Delete</button>`)
-                    .join('')}
+            <form id="user-info-form"></form>
+                <label for="username">Username</label>
+                <p id="username">${props.user.username}</p>
+                <label for="email">Email Address</label>
+                <p id="email-${props.user.id}">${props.user.email}</p>
 
-            <!--<form id="register-form">-->
-            <!--    <label for="username">Username</label>-->
-            <!--    <input id="username" name="username" type="text"/>-->
-            <!--    <label for="email">Email</label>-->
-            <!--    <input id="email" type="email">-->
-            <!--    <label for="password">Password</label>-->
-            <!--    <input id="password" name="password" type="password"/>-->
-            <!--    <input id="register-btn" type="submit" value="Register"/>-->
-            <!--</form>-->
+            <label for="new-password">New Password</label>
+            <input id="new-password" name="new-password" type="password" value=""/>
+            <button type="submit" id="change-pw-btn" class="btn btn-primary edit-button" data-id="${props.user.id}">Submit Password Change</button>
+            </form>
         </body>
-        </html>`;
-
+        </html>
+    `
 }
 
 export function UserEvent(){
+addUpdatePasswordListener();
+}
 
+function addUpdatePasswordListener(){
+    $(document).on("click", "#change-pw-btn", function (e){
+        e.preventDefault();
+
+        const id = $(this).data("id");
+        const newPassword = $("#new-password").val();
+
+        const request = {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        fetch(`${BASE_URL}/${id}/updatePassword?newPassword=${newPassword}`, request)
+            .then(res => {
+                console.log(res.status);
+            }).catch(error => {
+            console.log(error);
+        }).finally(() => {
+            createView("/user")
+        })
+
+
+
+    })
 }

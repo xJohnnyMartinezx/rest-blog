@@ -1,10 +1,8 @@
 package com.example.restblog.web;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -91,14 +89,10 @@ public class UsersController {
     private void updatePassword(@PathVariable Long id,
                                 @RequestParam(required = false) String oldPassword,
                                 @Valid @Size(min = 3) @RequestParam String newPassword) {
-        for (User user : getAll()) {
-            if ((Objects.equals(user.getId(), id))){
-                if (Objects.equals(user.getPassword(), oldPassword)) {
-                    System.out.println("Invalid Password");
-                }
+        User userToUpdate = getById(id);
+        userToUpdate.setPassword(newPassword);
+        System.out.println(userToUpdate.getPassword());
 
-            }
-        }
     }
 
 

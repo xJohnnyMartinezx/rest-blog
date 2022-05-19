@@ -38,14 +38,14 @@ export default function router(URI) {
             title: "Register",
             viewEvent : RegisterEvent
         },
-        '/users': {
+        '/user': {
             returnView: User,
             state: {
-                users: '/api/users'
+                user: '/api/users/1'
             },
-            uri: '/users',
-            title: "User",
-            viewEvent : UserEvent
+            uri: '/user',
+            title: 'User',
+            viewEvent: UserEvent
         },
         '/posts': {
             returnView: PostIndex,
