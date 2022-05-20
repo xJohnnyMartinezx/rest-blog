@@ -15,10 +15,7 @@ import com.example.restblog.web.UsersController;
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
-    List<Post> posts = new ArrayList<>();
-        Post post1 = new Post(1L, "My First Post", "This is the body/contents of my first post.");
-        Post post2 = new Post(2L, "My Second Post", "This is the body/contents of my second post.");
-        Post post3 = new Post(3L, "My Third Post", "This is the body/contents of my third post.");
+
 
 
     public List<Post> setPost() {

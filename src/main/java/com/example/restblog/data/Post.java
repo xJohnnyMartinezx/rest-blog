@@ -33,6 +33,7 @@ public class Post {
 
 //    ******** GETTERS AND SETTERS ***********
 //   ************ USERS ************
+//
 
     public User getUser() {
         return user;

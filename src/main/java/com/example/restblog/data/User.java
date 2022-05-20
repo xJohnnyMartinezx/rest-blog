@@ -1,6 +1,7 @@
 package com.example.restblog.data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,8 +18,10 @@ public class User {
 
 
 
-    private Collection<Post> posts;
-
+//    ONE USER HAS AUTHORED MANY POSTS
+//    BRINGS IN THE LIST OF POSTS
+    private Collection<Post> posts = new ArrayList<>();
+//^^^^^^^INSTANTIATES AN EMPTY LIST IF USER HAS NO POSTS(INSTEAD OF GETTING "NULL")
 
 
 
