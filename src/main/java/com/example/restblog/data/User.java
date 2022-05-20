@@ -1,9 +1,10 @@
 package com.example.restblog.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -20,18 +21,19 @@ public class User {
 
 //    ONE USER HAS AUTHORED MANY POSTS
 //    BRINGS IN THE LIST OF POSTS
-    private Collection<Post> posts = new ArrayList<>();
+    @JsonIgnoreProperties("user")
+    private List<Post> posts = new ArrayList<>();
 //^^^^^^^INSTANTIATES AN EMPTY LIST IF USER HAS NO POSTS(INSTEAD OF GETTING "NULL")
-
-
 
     public enum Role {USER, ADMIN}
 
 //    *********** CONSTRUCTOR ************
 //    ****** POST CONSTRUCTOR *****
-public User(Collection<Post> posts) {
-    this.posts = posts;
-}
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 //*************************************
 
     public User() {
@@ -48,11 +50,11 @@ public User(Collection<Post> posts) {
 
 //    *********** GETTERS AND SETTERS **********
 //    **********POST GETTERS AND SETTERS *******
-public Collection<Post> getPosts() {
+public List<Post> getPosts() {
     return posts;
 }
 
-    public void setPosts(Collection<Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 //****************************************

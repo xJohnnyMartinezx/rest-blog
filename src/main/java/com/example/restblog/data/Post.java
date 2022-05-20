@@ -1,6 +1,7 @@
 package com.example.restblog.data;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -12,15 +13,10 @@ public class Post {
     private String title;
     private String content;
 
+    @JsonIgnoreProperties("posts")
     private User user;
 
-//    ********** USER CONSTRUCTOR*******
-
-    public Post(User user) {
-        this.user = user;
-    }
     //    ******* CONSTRUCTOR **********
-
 
     public Post() {
     }
@@ -77,7 +73,6 @@ public class Post {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

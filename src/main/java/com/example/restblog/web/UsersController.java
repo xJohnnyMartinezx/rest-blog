@@ -1,5 +1,6 @@
 package com.example.restblog.web;
 import com.example.restblog.data.User;
+import com.example.restblog.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -13,67 +14,45 @@ import java.util.Objects;
 @RequestMapping(value = "/api/users", headers = "Accept=application/json")
 public class UsersController {
 
+    private final UserService userService;
 
+    public UsersController(UserService userService){
+        this.userService = userService;
+    }
 
-    List<User> users = new ArrayList<>();
-
-
-
-
-//    *********** GET ALL USERS ***********
+    //    *********** GET ALL USERS ***********
     @GetMapping()
     public List<User> getAll() {
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-
-        return users;
+        return userService.getUsersList();
     }
 
     //******** GET BY ID *************
 
     @GetMapping("{id}")
     public User getById(@PathVariable Long id) {
-        for (User user : getAll()) {
-            if (Objects.equals(user.getId(), id)) {
-                return user;
-            }
-        }
-        return new User();
+        return userService.getUserById(id);
     }
 
     //******** GET BY USERNAME *************
     @GetMapping("/username")
     public User gertByUsername(@RequestParam String username){
-        for (User user : getAll()) {
-            if(Objects.equals(user.getUsername(), username)){
-                return user;
-            }
-        }
-        return new User();
+        return userService.getUserByUsername(username);
     }
 
 
     //******** GET BY EMAIL *************
     @GetMapping("/email")
     public User gertByEmail(@RequestParam String email){
-        for (User user : getAll()) {
-            if(Objects.equals(user.getEmail(), email)){
-                return user;
-            }
-        }
-        return new User();
+        return userService.getUserByEmail(email);
     }
 
 
     //******** CREATE USER **********
-    @PostMapping
-    private void createUser(@RequestBody User newUser) {
-        users.add(newUser);
-        System.out.println("New user has been created");
-
-
-    }
+//    @PostMapping
+//    private void createUser(@RequestBody User newUser) {
+//        users.add(newUser);
+//        System.out.println("New user has been created");
+//    }
 
     //    ********* UPDATE USER **********
     @PutMapping("{id}")

@@ -2,6 +2,8 @@ package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
+import com.example.restblog.service.UserService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,40 +11,35 @@ import java.util.List;
 import java.util.Objects;
 
 import com.example.restblog.web.UsersController;
-
+@Service
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
+    private final UserService userService;
 
-
-
-    public List<Post> setPost() {
-        posts.add(post1);
-        posts.add(post2);
-        posts.add(post3);
-
-        return posts;
+    public PostsController(UserService userService) {
+        this.userService = userService;
     }
+
 
     //********* GET ALL METHOD *********
     @GetMapping()
     public List<Post> getAll() {
-        posts.removeAll(posts);
-        return setPost();
+        return userService.getPosts();
     }
 
     //******** GET BY ID *************
 
     @GetMapping("{id}")
     public Post getById(@PathVariable Long id) {
-        for (Post post : getAll()) {
+        for (Post post : userService.getPosts()) {
             if (Objects.equals(post.getId(), id)) {
                 return post;
             }
         }
-        return new Post();
+        return null;
     }
 
     //******** CREATE POST **********

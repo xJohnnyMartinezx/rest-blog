@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -23,9 +24,19 @@ public class UserService {
         return posts;
     }
 
+    public void addPost (Post newPost, String username){
+        User user = getUserByUsername(username);
+
+        user.getPosts().add(newPost);
+
+        newPost.setUser(user);
+
+        posts.add(newPost);
+    }
+
     public User getUserById(Long id) {
-        for (User user : userList) {
-            if (user.getId().equals(id)) {
+        for (User user : userList){
+            if (Objects.equals(user.getId(), id)) {
                 return user;
             }
         }
@@ -41,8 +52,17 @@ public class UserService {
         return null;
     }
 
+    public User getUserByEmail(String email) {
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     private List<User> setUserList(){
-        List<User> users = new ArrayList<>():
+        List<User> users = new ArrayList<>();
         users.add(new User(1L,"kungfupanda", "panda54@gmail.com", "pandafight"));
         users.add(new User(2L, "nacholibre69", "youaretoofat@gmail.com", "eskeleto"));
         users.add(new User(3L, "deweyfinn", "skoolofrock@gmail.com", "guitarbattle"));
