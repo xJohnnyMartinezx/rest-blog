@@ -27,39 +27,36 @@ public class PostsController {
     //********* GET ALL METHOD *********
     @GetMapping()
     public List<Post> getAll() {
-        return userService.getPosts();
+        return userService.getAllPosts();
     }
 
     //******** GET BY ID *************
 
     @GetMapping("{id}")
     public Post getById(@PathVariable Long id) {
-        for (Post post : userService.getPosts()) {
-            if (Objects.equals(post.getId(), id)) {
-                return post;
-            }
-        }
-        return null;
+        return userService.getPostById(id);
     }
 
     //******** CREATE POST **********
     @PostMapping
-    private void createPost(@RequestBody Post newPost) {
+    private void createPostByUsername(@PathVariable String username, @RequestBody Post newPost) {
         System.out.println("New post has been created");
+        userService.addPost(newPost, username);
 
     }
 
     //    ********* UPDATE POST **********
     @PutMapping("{id}")
     private void updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
-        System.out.println("The id is: " + id);
-        System.out.println("Post has been updated");
+        System.out.println("Post with ID of " + id + " has been updated");
+        userService.updatePosts(id, updatePost);
     }
 
 
     //    ********** DELETE POST **********
     @DeleteMapping("{id}")
     private void deletePost(@PathVariable Long id) {
+        userService.deletePOstById(id);
         System.out.println("Post with ID of " + id + " has been deleted");
     }
 

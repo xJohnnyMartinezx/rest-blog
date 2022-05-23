@@ -1,7 +1,10 @@
 package com.example.restblog.web;
+
+import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import com.example.restblog.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ public class UsersController {
 
     private final UserService userService;
 
-    public UsersController(UserService userService){
+    public UsersController(UserService userService) {
         this.userService = userService;
     }
 
@@ -35,24 +38,31 @@ public class UsersController {
 
     //******** GET BY USERNAME *************
     @GetMapping("/username")
-    public User gertByUsername(@RequestParam String username){
+    public User getByUsername(@RequestParam String username) {
         return userService.getUserByUsername(username);
     }
 
 
     //******** GET BY EMAIL *************
     @GetMapping("/email")
-    public User gertByEmail(@RequestParam String email){
+    public User getByEmail(@RequestParam String email) {
         return userService.getUserByEmail(email);
     }
 
 
     //******** CREATE USER **********
-//    @PostMapping
-//    private void createUser(@RequestBody User newUser) {
-//        users.add(newUser);
-//        System.out.println("New user has been created");
-//    }
+    @PostMapping
+    private void createUser(@RequestBody User newUser) {
+        userService.getUsersList().add(newUser);
+        System.out.println("New user has been created");
+    }
+
+    //*********** ADD USER POST ***********
+    @PostMapping("{username}")
+    public void addUserPost(@PathVariable String username, @RequestBody Post newPost) {
+        User user = userService.getUserByUsername(username);
+        user.getPosts().add(newPost);
+    }
 
     //    ********* UPDATE USER **********
     @PutMapping("{id}")
