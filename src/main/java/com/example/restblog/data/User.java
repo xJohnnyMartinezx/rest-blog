@@ -2,10 +2,14 @@ package com.example.restblog.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@Table(name="users")
 public class User {
 
 //    *********** PROPERTIES *************
@@ -15,13 +19,15 @@ public class User {
     private String email;
     private String password;
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
 
 
 //    ONE USER HAS AUTHORED MANY POSTS
 //    BRINGS IN THE LIST OF POSTS
-    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")// we want to ignore the post.user field to prevent a StackOverflowError
     private List<Post> posts = new ArrayList<>();
 //^^^^^^^INSTANTIATES AN EMPTY LIST IF USER HAS NO POSTS(INSTEAD OF GETTING "NULL")
 

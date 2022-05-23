@@ -4,17 +4,24 @@ package com.example.restblog.data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import javax.persistence.*;
+
+
+@Entity
+@Table(name="posts")
 public class Post {
 
 
 //    ********* PROPERTIES **********
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
 
-    @JsonIgnoreProperties("posts")
-    private User user;
+    @ManyToOne
+    @JsonIgnoreProperties("posts")// ignore the posts field on the User object to prevent extra data from being returned
+    private User user; // each post has only 1 user who authored it
 
     //    ******* CONSTRUCTOR **********
 
