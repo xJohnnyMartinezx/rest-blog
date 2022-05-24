@@ -19,6 +19,7 @@ public class User {
     private String email;
     private String password;
     private LocalDateTime createdAt = LocalDateTime.now();
+//    @EMUN ENFORCES THAT THE EMUN VALUE IS A STRING, NOT AN INT.
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 

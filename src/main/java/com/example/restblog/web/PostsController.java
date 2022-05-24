@@ -38,7 +38,7 @@ public class PostsController {
     }
 
     //******** CREATE POST **********
-    @PostMapping
+    @PostMapping("{username}")
     private void createPostByUsername(@PathVariable String username, @RequestBody Post newPost) {
         System.out.println("New post has been created");
         userService.addPost(newPost, username);
@@ -56,7 +56,7 @@ public class PostsController {
     //    ********** DELETE POST **********
     @DeleteMapping("{id}")
     private void deletePost(@PathVariable Long id) {
-        userService.deletePOstById(id);
+        userService.deletePostById(id);
         System.out.println("Post with ID of " + id + " has been deleted");
     }
 

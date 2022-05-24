@@ -20,7 +20,7 @@ public class Post {
     private String content;
 
     @ManyToOne
-    @JsonIgnoreProperties("posts")// ignore the posts field on the User object to prevent extra data from being returned
+    @JsonIgnoreProperties({"post", "password"})// ignore the posts field on the User object to prevent extra data from being returned
     private User user; // each post has only 1 user who authored it
 
     //    ******* CONSTRUCTOR **********

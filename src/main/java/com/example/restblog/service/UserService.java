@@ -1,7 +1,9 @@
 package com.example.restblog.service;
 
 import com.example.restblog.data.Post;
+import com.example.restblog.data.PostsRepository;
 import com.example.restblog.data.User;
+import com.example.restblog.data.UsersRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,49 +17,49 @@ import java.util.Objects;
 @Service
 public class UserService {
 
-    private List<User> userList = setUserList();
-    private List<Post> posts = setPostList();
+//    INJECTS USER_REPOSITORY AND POSTS_REPOSITORY INTO USER SERVICE CLASS VIA CONSTRUCTOR INJECTION
+    private final UsersRepository usersRepository;
+    private final PostsRepository postsRepository;
 
+    public UserService(UsersRepository usersRepository, PostsRepository postsRepository) {
+        this.usersRepository = usersRepository;
+        this.postsRepository = postsRepository;
+    }
+//*************** USER POST ASSOCIATION *********************
+    public void addPost(Post newPost, String username){
+//        USER OBJECT WHO MADE THE POST
+        User user = getUserByUsername(username);
+//        ASSOCIATING THE POST WITH THE USER OBJECT
+        user.getPosts().add(newPost);
+//        ASSOCIATING THE USER WITH THE POST OBJECT
+        newPost.setUser(user);
+//        SAVE THE NEW POST WITH ASSOCIATED USER TO THE DATABASE
+        postsRepository.save(newPost);
+    }
 //************************** USER METHODS ****************************
     //    ********** GET ALL USERS ********
     public List<User> getUsersList() {
-        return userList;
+        return usersRepository.findAll();
     }
 
     //    ******** GET USERS BY ID ***********
     public User getUserById(Long id) {
-        for (User user : userList) {
-            if (Objects.equals(user.getId(), id)) {
-                return user;
-            }
-        }
-        return null;
+        return usersRepository.findById(id).orElseThrow();
     }
     //    ******** GET USER BY USERNAME ***********
     public User getUserByUsername(String username) {
-        for (User user : userList) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+    return usersRepository.findByUsername(username);
     }
     //    ******** GET USER BY EMAIL ***********
     public User getUserByEmail(String email) {
-        for (User user : userList) {
-            if (user.getEmail().equals(email)) {
-                return user;
-            }
-        }
-        return null;
+    return usersRepository.findByEmail(email);
     }
 //    ********** UPDATE USER PASSWORD ***********
-private void updateUserPassword(Long id,
-                            @RequestParam(required = false) String oldPassword,
-                            @Valid @Size(min = 3) String newPassword) {
+    public void updateUserPassword(Long id, String oldPassword, String newPassword) {
     User userToUpdate = getUserById(id);
     userToUpdate.setPassword(newPassword);
     System.out.println(userToUpdate.getPassword());
+
 }
 
 
@@ -65,62 +67,36 @@ private void updateUserPassword(Long id,
     //    ********************** POST METHODS ************************
 //    ********** GET ALL POSTS ********
     public List<Post> getAllPosts() {
-        return posts;
+        return postsRepository.findAll();
     }
 
     //    ******** GET POSTS BY ID ***********
     public Post getPostById(Long id) {
-        for (Post post : posts) {
-            if (Objects.equals(post.getId(), id)) {
-                return post;
-            }
-        }
-        return null;
+    return postsRepository.findById(id).orElseThrow();
     }
 
     //    ******** CREATE POST ***********
-    public void addPost(Post newPost, String username) {
-        User user = getUserByUsername(username);
-        user.getPosts().add(newPost);
-        newPost.setUser(user);
-        posts.add(newPost);
-    }
+//    public void addPost(Post newPost, String username) {
+//        User user = usersRepository.findByUsername(username);
+//        user.getPosts().add(newPost);
+//        newPost.setUser(user);
+//        postsRepository.save(newPost);
+//    }
 
     //    ******** UPDATE POSTS *************
-    public void updatePosts(Long id, Post updatedPost) {
-        for (Post post : posts) {
-            if (post.getId().equals(id)) {
-                post.setContent(updatedPost.getContent());
-                post.setTitle(updatedPost.getTitle());
-            }
+    public void updatePosts(Long id, Post post) {
+        Post postToUpdate = postsRepository.findById(id).orElseThrow();
+        if (post.getContent() != null && !post.getContent().isEmpty()){
+            postToUpdate.setContent(post.getContent());
+        }
+        if (post.getTitle() != null && !post.getTitle().isEmpty()){
+            postToUpdate.setTitle(post.getTitle());
         }
     }
 
     //    ******** DELETE POST ************
-    public void deletePOstById(Long id) {
-        for (Post post : posts) {
-            if (post.getId() == id) {
-                posts.remove(post);
-                return;
-            }
-        }
-    }
-
-//******************** OBJECTS LISTS *********************
-    private List<User> setUserList() {
-        List<User> users = new ArrayList<>();
-        users.add(new User(1L, "kungfupanda", "panda54@gmail.com", "pandafight"));
-        users.add(new User(2L, "nacholibre69", "youaretoofat@gmail.com", "eskeleto"));
-        users.add(new User(3L, "deweyfinn", "skoolofrock@gmail.com", "guitarbattle"));
-        return users;
-    }
-
-    private List<Post> setPostList() {
-        List<Post> posts = new ArrayList<>();
-        posts.add(new Post(1L, "My First Post", "This is the body/contents of my first post."));
-        posts.add(new Post(2L, "My Second Post", "This is the body/contents of my second post."));
-        posts.add(new Post(3L, "My Third Post", "This is the body/contents of my third post."));
-        return posts;
+    public void deletePostById(Long id) {
+        postsRepository.deleteById(id);
     }
 }
 
