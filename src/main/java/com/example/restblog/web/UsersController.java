@@ -52,8 +52,9 @@ public class UsersController {
 
     //******** CREATE USER **********
     @PostMapping
-    private void createUser(@RequestBody User newUser) {
-        userService.getUsersList().add(newUser);
+    private void addNewUser(@RequestBody User newUser) {
+//        userService.getUsersList().add(newUser);
+        userService.addNewUser(newUser);
         System.out.println("New user has been created");
     }
 

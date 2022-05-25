@@ -96,18 +96,30 @@ function createEditPostListener() {
         e.preventDefault();
         console.log("edit button has been clicked")
         postId = $(this).data("id");
-        requestMethod = "PUT"
 
         const postTitle = $(`#title-${postId}`).text();
         const postContent = $(`#content-${postId}`).text();
 
-        $("#add-post-title").val(postTitle);
-        $("#add-post-content").val(postContent);
+        // $("#add-post-title").val(postTitle);
+        // $("#add-post-content").val(postContent);
+        //
+        // console.log(postId);
+        // console.log(requestMethod);
 
-        console.log(postId);
-        console.log(requestMethod);
+        const request = {
+            method: "PUT",
+            body: JSON.stringify({
+                id: postId,
+                title: postTitle,
+                postContent: postContent
+            })
+        };
 
-
+        fetch(`${postUrl}/${postId}`, request)
+            .then(res => {
+                return res.json();
+            })
+            .catch(err => console.log(err));
     })
 }
 
@@ -135,3 +147,4 @@ function createEditPostListener() {
             })
         })
     }
+

@@ -71,8 +71,15 @@ public class UserService {
     public void updateUserPassword(Long id, String oldPassword, String newPassword) {
         User userToUpdate = getUserById(id);
         userToUpdate.setPassword(newPassword);
-        System.out.println(userToUpdate.getPassword());
+        usersRepository.save(userToUpdate);
+        System.out.println("New password is: " + userToUpdate.getPassword());
+    }
 
+//    *********** CREATE NEW USER *************
+//    public User addNewUser(String username, String email, String password){
+//        return usersRepository.createNewUser(username, email, password);
+    public void addNewUser(User newUser){
+        usersRepository.save(newUser);
     }
 
 
@@ -104,6 +111,7 @@ public class UserService {
         if (post.getTitle() != null && !post.getTitle().isEmpty()) {
             postToUpdate.setTitle(post.getTitle());
         }
+        postsRepository.save(postToUpdate);
     }
 
     //    ******** DELETE POST ************
