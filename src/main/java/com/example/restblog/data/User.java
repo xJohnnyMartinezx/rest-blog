@@ -9,23 +9,23 @@ import java.util.List;
 
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
-//    *********** PROPERTIES *************
-
+    //    *********** PROPERTIES *************
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
     private String email;
     private String password;
     private LocalDateTime createdAt = LocalDateTime.now();
-//    @EMUN ENFORCES THAT THE EMUN VALUE IS A STRING, NOT AN INT.
+    //    @EMUN ENFORCES THAT THE EMUN VALUE IS A STRING, NOT AN INT.
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
 
-
-//    ONE USER HAS AUTHORED MANY POSTS
+    //    ONE USER HAS AUTHORED MANY POSTS
 //    BRINGS IN THE LIST OF POSTS
     @OneToMany(mappedBy = "user")
     @JsonIgnoreProperties("user")// we want to ignore the post.user field to prevent a StackOverflowError
@@ -34,7 +34,7 @@ public class User {
 
     public enum Role {USER, ADMIN}
 
-//    *********** CONSTRUCTOR ************
+    //    *********** CONSTRUCTOR ************
 //    ****** POST CONSTRUCTOR *****
     public User(String username, String email, String password) {
         this.username = username;
@@ -55,11 +55,11 @@ public class User {
 
     }
 
-//    *********** GETTERS AND SETTERS **********
+    //    *********** GETTERS AND SETTERS **********
 //    **********POST GETTERS AND SETTERS *******
-public List<Post> getPosts() {
-    return posts;
-}
+    public List<Post> getPosts() {
+        return posts;
+    }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
@@ -99,6 +99,21 @@ public List<Post> getPosts() {
         this.password = password;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
 
 //    **********TO STRING **********

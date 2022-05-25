@@ -1,9 +1,6 @@
 package com.example.restblog.service;
 
-import com.example.restblog.data.Post;
-import com.example.restblog.data.PostsRepository;
-import com.example.restblog.data.User;
-import com.example.restblog.data.UsersRepository;
+import com.example.restblog.data.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,26 +14,39 @@ import java.util.Objects;
 @Service
 public class UserService {
 
-//    INJECTS USER_REPOSITORY AND POSTS_REPOSITORY INTO USER SERVICE CLASS VIA CONSTRUCTOR INJECTION
+    //    INJECTS USER_REPOSITORY AND POSTS_REPOSITORY INTO USER SERVICE CLASS VIA CONSTRUCTOR INJECTION
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
+    private final CategoriesRepository categoriesRepository;
 
-    public UserService(UsersRepository usersRepository, PostsRepository postsRepository) {
+    public UserService(UsersRepository usersRepository, PostsRepository postsRepository, CategoriesRepository categoriesRepository) {
         this.usersRepository = usersRepository;
         this.postsRepository = postsRepository;
+        this.categoriesRepository = categoriesRepository;
     }
-//*************** USER POST ASSOCIATION *********************
-    public void addPost(Post newPost, String username){
+
+    //*************** USER POST ASSOCIATION *********************
+    public void addPost(Post newPost, String username) {
 //        USER OBJECT WHO MADE THE POST
         User user = getUserByUsername(username);
 //        ASSOCIATING THE POST WITH THE USER OBJECT
         user.getPosts().add(newPost);
 //        ASSOCIATING THE USER WITH THE POST OBJECT
         newPost.setUser(user);
-//        SAVE THE NEW POST WITH ASSOCIATED USER TO THE DATABASE
+
+        List<Category> categoriesToAdd = new ArrayList<>();
+
+        for (Category category : newPost.getCategories()) {
+            categoriesToAdd.add(categoriesRepository.findCategoryByName(category.getName()));
+        }
+
+        newPost.setCategories(categoriesToAdd);
+
+        //        SAVE THE NEW POST WITH ASSOCIATED USER TO THE DATABASE
         postsRepository.save(newPost);
     }
-//************************** USER METHODS ****************************
+
+    //************************** USER METHODS ****************************
     //    ********** GET ALL USERS ********
     public List<User> getUsersList() {
         return usersRepository.findAll();
@@ -46,22 +56,24 @@ public class UserService {
     public User getUserById(Long id) {
         return usersRepository.findById(id).orElseThrow();
     }
+
     //    ******** GET USER BY USERNAME ***********
     public User getUserByUsername(String username) {
-    return usersRepository.findByUsername(username);
+        return usersRepository.findByUsername(username);
     }
+
     //    ******** GET USER BY EMAIL ***********
     public User getUserByEmail(String email) {
-    return usersRepository.findByEmail(email);
+        return usersRepository.findByEmail(email);
     }
-//    ********** UPDATE USER PASSWORD ***********
+
+    //    ********** UPDATE USER PASSWORD ***********
     public void updateUserPassword(Long id, String oldPassword, String newPassword) {
-    User userToUpdate = getUserById(id);
-    userToUpdate.setPassword(newPassword);
-    System.out.println(userToUpdate.getPassword());
+        User userToUpdate = getUserById(id);
+        userToUpdate.setPassword(newPassword);
+        System.out.println(userToUpdate.getPassword());
 
-}
-
+    }
 
 
     //    ********************** POST METHODS ************************
@@ -72,7 +84,7 @@ public class UserService {
 
     //    ******** GET POSTS BY ID ***********
     public Post getPostById(Long id) {
-    return postsRepository.findById(id).orElseThrow();
+        return postsRepository.findById(id).orElseThrow();
     }
 
     //    ******** CREATE POST ***********
@@ -86,10 +98,10 @@ public class UserService {
     //    ******** UPDATE POSTS *************
     public void updatePosts(Long id, Post post) {
         Post postToUpdate = postsRepository.findById(id).orElseThrow();
-        if (post.getContent() != null && !post.getContent().isEmpty()){
+        if (post.getContent() != null && !post.getContent().isEmpty()) {
             postToUpdate.setContent(post.getContent());
         }
-        if (post.getTitle() != null && !post.getTitle().isEmpty()){
+        if (post.getTitle() != null && !post.getTitle().isEmpty()) {
             postToUpdate.setTitle(post.getTitle());
         }
     }
