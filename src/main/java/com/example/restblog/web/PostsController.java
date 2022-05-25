@@ -2,6 +2,7 @@ package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
+import com.example.restblog.service.EmailService;
 import com.example.restblog.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,15 @@ import com.example.restblog.web.UsersController;
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
-    private final UserService userService;
 
-    public PostsController(UserService userService) {
+    private final UserService userService;
+    private final EmailService emailService;
+
+    public PostsController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
+
 
 
     //********* GET ALL METHOD *********
