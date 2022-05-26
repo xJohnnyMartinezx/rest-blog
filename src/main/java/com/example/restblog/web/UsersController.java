@@ -66,22 +66,26 @@ public class UsersController {
     }
 
     //    ********* UPDATE USER **********
-    @PutMapping("{id}")
-    private void updateUser(@PathVariable Long id, @RequestBody User updateUser) {
-        System.out.println("The id is: " + id);
-        System.out.println("User has been updated");
-    }
+//    @PutMapping("{id}")
+//    private void updateUser(@PathVariable Long id, @RequestBody User updateUser) {
+//        System.out.println("The id is: " + id);
+//        System.out.println("User has been updated");
+//    }
 
     //    ********* UPDATE PASSWORD **********
     @PutMapping({"{id}/updatePassword"})
     private void updatePassword(@PathVariable Long id,
                                 @RequestParam(required = false) String oldPassword,
                                 @Valid @Size(min = 3) @RequestParam String newPassword) {
-//        User userToUpdate = getById(id);
-//        userToUpdate.setPassword(newPassword);
-//        System.out.println(userToUpdate.getPassword());
         userService.updateUserPassword(id, oldPassword, newPassword);
 
+    }
+
+//    ********** UPDATE USER INFO ***************
+    @PatchMapping("{id}/updateUserProfile")
+    private void updateProfile(@PathVariable Long id, @RequestParam String username, @RequestParam String email){
+        userService.updateUserProfile(id, username, email);
+        System.out.println("User with ID of " + id + " has been updated....New Username is: " + username + " New Email is: " + email);
     }
 
 

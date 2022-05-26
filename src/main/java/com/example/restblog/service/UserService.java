@@ -82,6 +82,15 @@ public class UserService {
         usersRepository.save(newUser);
     }
 
+//    *********** UPDATE USER INFO *************
+    public void updateUserProfile(Long id, String username, String email){
+        User profileToUpdate = getUserById(id);
+        profileToUpdate.setUsername(username);
+        profileToUpdate.setEmail(email);
+        System.out.println(profileToUpdate);
+        usersRepository.save(profileToUpdate);
+    }
+
 
     //    ********************** POST METHODS ************************
 //    ********** GET ALL POSTS ********

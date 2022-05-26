@@ -22,6 +22,7 @@ public class Post {
     private String title;
     private String content;
 
+
     @ManyToOne
     @JsonIgnoreProperties({"posts", "password"})// ignore the posts field on the User object to prevent extra data from being returned
     private User user; // each post has only 1 user who authored it
@@ -45,6 +46,7 @@ public class Post {
     public Post() {
     }
 
+
     public Post(Long id, String title, String content) {
         this.id = id;
         this.title = title;
@@ -62,7 +64,6 @@ public Collection<Category> getCategories() {
     }
 
 //   ************ USERS ************
-//
 
     public User getUser() {
         return user;
@@ -98,14 +99,13 @@ public Collection<Category> getCategories() {
         this.content = content;
     }
 
-
-
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", categories=" + categories +
                 '}';
     }
 }

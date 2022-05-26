@@ -4,22 +4,39 @@ const postUrl = "http://localhost:8080/api/posts";
 let requestMethod = "POST";
 let postId = "";
 
+
+
 export default function PostIndex(props) {
     //language=HTML
     return `
         <header>
+            <div class="ms-3">
             <h1>Posts Page</h1>
+            </div>
         </header>
         <main>
-            <div id="posts-container">
+            <div id="posts-container" class="ms-3">
+               
                 ${props.posts.map(post =>
                         `
-                                <h3 id="title-${post.id}">${post.title}</h3>
-                                <p id="content-${post.id}">${post.content}</p>
-<button type="submit" class="btn btn-primary edit-button" data-id="${post.id}">Edit</button>
-<button type="submit" class="btn btn-danger delete-button" data-id="${post.id}">Delete</button>`)
+                   <div class="flex-container col-5" style="border-style: solid">
+                    <div class="card">
+                      <h5 class="card-header">${post.user.username}</h5>
+                      <div class="card-body">
+                        <h5 class="card-title" id="title-${post.id}">${post.title}</h5>
+                        <p class="card-text" id="content-${post.id}">${post.content}</p>
+                        <button type="submit" class="btn btn-primary edit-button" data-id="${post.id}">Edit</button>
+                    <button type="submit" class="btn btn-danger delete-button" data-id="${post.id}">Delete</button>
+                      </div>
+                    </div>
+                   
+                    </div>
+                         <br>`)
                         .join('')}
             </div>
+            <br>
+            <div class="flex-container col-5 ms-3" style="border-style: solid">
+            <div class="card">
             <div id="post-form">
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Post Title</label>
@@ -33,9 +50,10 @@ export default function PostIndex(props) {
             <div>
                 <button id="create-post-sub-butt" class="btn btn-secondary">Submit New Post</button>
             </div>
+            </div>
+            </div>
         </main>
     `;
-
 }
 
 
@@ -124,27 +142,27 @@ function createEditPostListener() {
 }
 
 //********** DELETE POST FUNCTION *************
-    function deletePost(){
-        $(document).on("click", ".delete-button", function (e) {
-            e.preventDefault();
-            console.log("delete button has been clicked")
+function deletePost() {
+    $(document).on("click", ".delete-button", function (e) {
+        e.preventDefault();
+        console.log("delete button has been clicked")
 
-            const id = $(this).data("id");
+        const id = $(this).data("id");
 
-            const request = {
-                method: "DELETE"
-            }
+        const request = {
+            method: "DELETE"
+        }
 
-            fetch(`${postUrl}/${id}`, request)
-                .then(res => {
-                    console.log(res.status);
-                    // createView("/posts")
-                }).catch(error => {
-                console.log(error);
-                // createView("/posts");
-            }).finally(() => {
-                createView("/posts")
-            })
+        fetch(`${postUrl}/${id}`, request)
+            .then(res => {
+                console.log(res.status);
+                // createView("/posts")
+            }).catch(error => {
+            console.log(error);
+            // createView("/posts");
+        }).finally(() => {
+            createView("/posts")
         })
-    }
+    })
+}
 

@@ -21,7 +21,7 @@ export default function router(URI) {
         '/': {
             returnView: Home,
             state: {},
-            uri: '/',
+            uri: '/home',
             title: 'Home',
         },
         '/login': {
