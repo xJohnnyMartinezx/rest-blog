@@ -1,6 +1,7 @@
 package com.example.restblog.service;
 
 import com.example.restblog.data.*;
+import com.example.restblog.dto.CreatePostDto;
 import org.springframework.stereotype.Service;
 
 
@@ -31,9 +32,11 @@ public class PostService {
     }
 
     //*************** USER POST ASSOCIATION *********************
-    public void addPost(Post newPost, String username) {
+    public void addPost(CreatePostDto dto, Post newPost, String username) {
 //        USER OBJECT WHO MADE THE POST
         User user = userService.getUserByUsername(username);
+        newPost.setTitle(dto.getTitle());
+        newPost.setContent(dto.getContent());
 //        ASSOCIATING THE POST WITH THE USER OBJECT
         user.getPosts().add(newPost);
 //        ASSOCIATING THE USER WITH THE POST OBJECT
@@ -41,8 +44,8 @@ public class PostService {
 
         List<Category> categoriesToAdd = new ArrayList<>();
 
-        for (Category category : newPost.getCategories()) {
-            categoriesToAdd.add(categoriesRepository.findCategoryByName(category.getName()));
+        for (String categoryName : dto.getCategories()) {
+            categoriesToAdd.add(categoriesRepository.findCategoryByName(categoryName));
         }
 
         newPost.setCategories(categoriesToAdd);

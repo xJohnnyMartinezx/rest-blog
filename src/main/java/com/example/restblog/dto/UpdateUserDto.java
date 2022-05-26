@@ -1,4 +1,4 @@
-package com.example.restblog.web.dto;
+package com.example.restblog.dto;
 
 public class UpdateUserDto{
 

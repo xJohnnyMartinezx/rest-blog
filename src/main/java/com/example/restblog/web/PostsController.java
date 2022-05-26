@@ -1,18 +1,15 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
-import com.example.restblog.data.User;
 import com.example.restblog.service.EmailService;
 import com.example.restblog.service.PostService;
 import com.example.restblog.service.UserService;
+import com.example.restblog.dto.CreatePostDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import com.example.restblog.web.UsersController;
 @Service
 @CrossOrigin
 @RestController
@@ -47,9 +44,11 @@ public class PostsController {
 
     //******** CREATE POST **********
     @PostMapping("{username}")
-    private void createPostByUsername(@PathVariable String username, @RequestBody Post newPost) {
+    private void createPostByUsername(@PathVariable String username, @RequestBody CreatePostDto dto) {
+        Post newPost = new Post();
+        postService.addPost(dto, newPost, username);
         System.out.println("New post has been created");
-        postService.addPost(newPost, username);
+
         emailService.prepareAndSend(newPost, "New Post Created", "You've created an new post.");
 
     }

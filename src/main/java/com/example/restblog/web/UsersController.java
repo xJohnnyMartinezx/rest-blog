@@ -3,14 +3,12 @@ package com.example.restblog.web;
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import com.example.restblog.service.UserService;
-import com.example.restblog.web.dto.UpdateUserDto;
+import com.example.restblog.dto.UpdateUserDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @CrossOrigin
@@ -76,7 +74,8 @@ public class UsersController {
     //    ********* UPDATE USERNAME AND EMAIL WITH DTO *********
     @PutMapping
     public void update(@RequestBody UpdateUserDto updateUserDto) {
-        System.out.println(updateUserDto);
+        userService.updateUser(updateUserDto);
+        System.out.println("Username and email update successful");
     }
 
     //    ********* UPDATE PASSWORD **********
@@ -87,13 +86,13 @@ public class UsersController {
         userService.updateUserPassword(id, oldPassword, newPassword);
 
     }
-
-    //    ********** UPDATE USER INFO ***************
-    @PatchMapping("{id}/updateUserProfile")
-    private void updateProfile(@PathVariable Long id, @RequestParam String username, @RequestParam String email) {
-        userService.updateUserProfile(id, username, email);
-        System.out.println("User with ID of " + id + " has been updated....New Username is: " + username + " New Email is: " + email);
-    }
+//
+//    //    ********** UPDATE USER INFO ***************
+//    @PatchMapping("{id}/updateUserProfile")
+//    private void updateProfile(@PathVariable Long id, @RequestParam String username, @RequestParam String email) {
+//        userService.updateUserProfile(id, username, email);
+//        System.out.println("User with ID of " + id + " has been updated....New Username is: " + username + " New Email is: " + email);
+//    }
 
 
     //    ********** DELETE USER **********

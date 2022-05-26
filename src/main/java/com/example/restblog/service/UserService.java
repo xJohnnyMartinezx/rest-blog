@@ -1,6 +1,7 @@
 package com.example.restblog.service;
 
 import com.example.restblog.data.*;
+import com.example.restblog.dto.UpdateUserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +57,18 @@ public class UserService {
         profileToUpdate.setEmail(email);
         System.out.println(profileToUpdate);
         usersRepository.save(profileToUpdate);
+    }
+
+    public void updateUser(UpdateUserDto updateUserDto){
+        User user = usersRepository.findById(updateUserDto.getId()).orElseThrow();
+
+        if(updateUserDto.getUsername() != null && !updateUserDto.getUsername().isEmpty()){
+            user.setUsername(updateUserDto.getUsername());
+        }
+        if(updateUserDto.getEmail() != null && !updateUserDto.getEmail().isEmpty()){
+            user.setEmail(updateUserDto.getEmail());
+        }
+        usersRepository.save(user);
     }
 }
 
