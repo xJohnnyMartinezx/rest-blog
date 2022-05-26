@@ -47,6 +47,7 @@ public class PostsController {
     private void createPostByUsername(@PathVariable String username, @RequestBody Post newPost) {
         System.out.println("New post has been created");
         userService.addPost(newPost, username);
+        emailService.prepareAndSend(newPost, "New Post Created", "You've created an new post.");
 
     }
 
