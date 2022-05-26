@@ -3,6 +3,7 @@ package com.example.restblog.web;
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import com.example.restblog.service.UserService;
+import com.example.restblog.web.dto.UpdateUserDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -72,6 +73,12 @@ public class UsersController {
 //        System.out.println("User has been updated");
 //    }
 
+    //    ********* UPDATE USERNAME AND EMAIL WITH DTO *********
+    @PutMapping
+    public void update(@RequestBody UpdateUserDto updateUserDto) {
+        System.out.println(updateUserDto);
+    }
+
     //    ********* UPDATE PASSWORD **********
     @PutMapping({"{id}/updatePassword"})
     private void updatePassword(@PathVariable Long id,
@@ -81,9 +88,9 @@ public class UsersController {
 
     }
 
-//    ********** UPDATE USER INFO ***************
+    //    ********** UPDATE USER INFO ***************
     @PatchMapping("{id}/updateUserProfile")
-    private void updateProfile(@PathVariable Long id, @RequestParam String username, @RequestParam String email){
+    private void updateProfile(@PathVariable Long id, @RequestParam String username, @RequestParam String email) {
         userService.updateUserProfile(id, username, email);
         System.out.println("User with ID of " + id + " has been updated....New Username is: " + username + " New Email is: " + email);
     }
