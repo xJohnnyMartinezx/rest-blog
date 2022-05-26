@@ -1,6 +1,7 @@
 package com.example.restblog.service;
 
 import com.example.restblog.data.*;
+import com.example.restblog.dto.CreateUserDto;
 import com.example.restblog.dto.UpdateUserDto;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,11 @@ public class UserService {
     }
 
     //    *********** CREATE NEW USER *************
-    public void addNewUser(User newUser) {
-        usersRepository.save(newUser);
+    public void createUser(CreateUserDto createUserDto) {
+        usersRepository.save(new User(
+                createUserDto.getUsername(),
+                createUserDto.getEmail(),
+                createUserDto.getPassword()));
     }
 
     //    *********** UPDATE USER INFO *************

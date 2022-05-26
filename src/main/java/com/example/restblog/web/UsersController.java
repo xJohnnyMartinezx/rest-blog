@@ -2,6 +2,7 @@ package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
+import com.example.restblog.dto.CreateUserDto;
 import com.example.restblog.service.UserService;
 import com.example.restblog.dto.UpdateUserDto;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +52,8 @@ public class UsersController {
 
     //******** CREATE USER **********
     @PostMapping
-    private void addNewUser(@RequestBody User newUser) {
-//        userService.getUsersList().add(newUser);
-        userService.addNewUser(newUser);
+    private void addNewUser(@RequestBody CreateUserDto createUserDto) {
+        userService.createUser(createUserDto);
         System.out.println("New user has been created");
     }
 
