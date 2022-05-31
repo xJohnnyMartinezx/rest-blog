@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin
@@ -45,7 +46,7 @@ public class UsersController {
 
     //******** GET BY EMAIL *************
     @GetMapping("/email")
-    public User getByEmail(@RequestParam String email) {
+    public Optional<User> getByEmail(@RequestParam String email) {
         return userService.getUserByEmail(email);
     }
 

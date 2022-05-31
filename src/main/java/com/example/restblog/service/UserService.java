@@ -6,6 +6,7 @@ import com.example.restblog.dto.UpdateUserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,7 +35,7 @@ public class UserService {
     }
 
     //    ******** GET USER BY EMAIL ***********
-    public User getUserByEmail(String email) {
+    public Optional<User> getUserByEmail(String email) {
         return usersRepository.findByEmail(email);
     }
 
