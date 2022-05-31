@@ -3,19 +3,19 @@ import createView from "../createView.js";
 const BASE_URL = "http://localhost:8080/api/users"
 
 export default function User(props) {
-    // console.log(props.user);
+    console.log(props.user);
 
-    // language=HTML
+    //language=HTML
     return `
 
         <!DOCTYPE html>
         <html lang="em">
         <head>
             <meta charset="UTF-8"/>
-            <title>Hello, ${props.user.username}</title>
         </head>
         <body>
-        <h1>Your Information</h1>
+        <h1>Hello, ${props.user.id}</h1>
+        <h3>Your Information</h3>
 
         <div id="user-container">
             <form id="user-info-form"></form>
@@ -69,7 +69,7 @@ function addUpdatePasswordListener() {
 
 function updateUserProfileListener() {
     const request = {
-        method: "PATCH",
+        method: "GET",
         headers: {
             "Content-Type": "application/json"
         }

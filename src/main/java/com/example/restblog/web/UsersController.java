@@ -5,6 +5,7 @@ import com.example.restblog.data.User;
 import com.example.restblog.dto.CreateUserDto;
 import com.example.restblog.service.UserService;
 import com.example.restblog.dto.UpdateUserDto;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,9 +20,11 @@ import java.util.Optional;
 public class UsersController {
 
     private final UserService userService;
+    private PasswordEncoder passwordEncoder;
 
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //    *********** GET ALL USERS ***********
@@ -52,8 +55,15 @@ public class UsersController {
 
 
     //******** CREATE USER **********
-    @PostMapping
+//    @PostMapping
+//    private void addNewUser(@RequestBody CreateUserDto createUserDto) {
+//        userService.createUser(createUserDto);
+//        System.out.println("New user has been created");
+//    }
+
+    @PostMapping("create")
     private void addNewUser(@RequestBody CreateUserDto createUserDto) {
+        createUserDto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         userService.createUser(createUserDto);
         System.out.println("New user has been created");
     }

@@ -43,7 +43,7 @@ export default function router(URI) {
             state: {
                 user: '/api/users'
             },
-            uri: '/user',
+            uri: '/users',
             title: 'User',
             viewEvent: UserEvent
         },
