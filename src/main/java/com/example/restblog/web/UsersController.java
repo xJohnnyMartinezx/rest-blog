@@ -5,7 +5,9 @@ import com.example.restblog.data.User;
 import com.example.restblog.dto.CreateUserDto;
 import com.example.restblog.service.UserService;
 import com.example.restblog.dto.UpdateUserDto;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +27,12 @@ public class UsersController {
     public UsersController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("me")
+    public Optional<User> getCurrentUser(OAuth2Authentication auth){
+        System.out.println(auth.toString());
+        return userService.getUserByEmail(auth.getName());
     }
 
     //    *********** GET ALL USERS ***********
@@ -50,7 +58,7 @@ public class UsersController {
     //******** GET BY EMAIL *************
     @GetMapping("/email")
     public Optional<User> getByEmail(@RequestParam String email) {
-        return userService.getUserByEmail(email);
+        return Optional.of(userService.getUserByEmail(email).orElseThrow());
     }
 
 
@@ -90,6 +98,7 @@ public class UsersController {
     }
 
     //    ********* UPDATE PASSWORD **********
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping({"{id}/updatePassword"})
     private void updatePassword(@PathVariable Long id,
                                 @RequestParam(required = false) String oldPassword,

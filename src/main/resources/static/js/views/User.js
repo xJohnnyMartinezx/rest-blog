@@ -74,7 +74,7 @@ function updateUserProfileListener() {
             "Content-Type": "application/json"
         }
     }
-    fetch(`http://localhost:8080/api/users/${id}`, request)
+    fetch(`http://localhost:8080/api/users/me`, request)
         .then(res => {
             console.log(res.status);
         }).catch(error => {
